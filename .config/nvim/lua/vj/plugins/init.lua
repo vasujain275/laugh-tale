@@ -1,10 +1,28 @@
 return {
-  'tpope/vim-sleuth',
-  'numToStr/Comment.nvim',
-  'ThePrimeagen/vim-be-good',
-  'mfussenegger/nvim-dap',
-  { 'mfussenegger/nvim-jdtls', ft = 'java' },
+  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+
+  -- NOTE: Plugins can also be added by using a table,
+  -- with the first argument being the link and the following
+  -- keys can be used to configure plugin behavior/loading/etc.
+  --
+  -- Use `opts = {}` to force a plugin to be loaded.
+  --
+  --  This is equivalent to:
+  --    require('Comment').setup({})
+
+  -- "gc" to comment visual regions/lines
+  { 'numToStr/Comment.nvim', name = 'comment.nvim', opts = {} },
+
+  -- Highlight todo, notes, etc in comments
+  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+
   'xiyaowong/transparent.nvim',
-  { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+
+  'ThePrimeagen/vim-be-good',
+
   { 'christoomey/vim-tmux-navigator', lazy = false },
+
+  'github/copilot.vim',
 }
+
