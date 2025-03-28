@@ -121,6 +121,7 @@ lsfind ()
 # Wayland Clipboard Aliases `wl-clipboard`
 alias pbcopy='wl-copy'
 alias pbpaste='wl-paste'
+alias hashtag='echo "#" | wl-copy'
 
 # Update and Ugrade Arch
 function up() {
@@ -170,6 +171,11 @@ esac
 
 # Cargo Bin
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Go Bin
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
 
 # Local Bin
 export PATH="$HOME/.local/bin:$PATH"
