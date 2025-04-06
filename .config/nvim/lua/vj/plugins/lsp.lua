@@ -217,7 +217,11 @@ return {
       },
       ts_ls = {},
       yamlls = {},
-      clangd = {},
+      clangd = {
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'h' },
+      },
+      pbls = {},
+      ansiblels = {},
       rust_analyzer = {},
       html = {},
       cssls = {},
