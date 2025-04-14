@@ -73,6 +73,7 @@ alias e='exit'
 alias mkdir='mkdir -p'
 alias vim='nvim'
 alias v='nvim'
+alias t='tmux'
 alias grep='rg --color=auto'
 alias ssn='sudo shutdown now'
 alias srn='sudo reboot now'
@@ -191,3 +192,11 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH="$PATH:/home/vasu/.turso"
 
 source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# pyenv configuration
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+# Optional: If you want pyenv-virtualenv functionality
+eval "$(pyenv virtualenv-init - zsh)"
