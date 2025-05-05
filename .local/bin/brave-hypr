@@ -1,0 +1,18 @@
+#!/bin/bash
+export GTK_USE_PORTAL=1
+
+exec brave --password-store=gnome \
+  --enable-features=UseOzonePlatform,WaylandUsePortal \
+  --ozone-platform=wayland \
+  --ozone-platform-hint=auto \
+  --enable-features=VaapiVideoDecoder,VaapiVideoEncode \
+  --ignore-gpu-blocklist \
+  --disable-gpu-driver-bug-workarounds \
+  --use-gl=desktop \
+  --enable-accelerated-video-decode \
+  --disable-features=TranslateUI,OptimizationGuideModelDownloading \
+  --enable-features=WebRTCHwVP8Encoding,WebRTCHwVP9Encoding \
+  --disable-notifications \
+  --disable-domain-reliability \
+  --enable-zero-copy \
+  "$@"
