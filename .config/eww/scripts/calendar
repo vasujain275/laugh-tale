@@ -1,0 +1,226 @@
+;;; eww/eww.yuck - Calendar Widget
+
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry :x "0%"
+                     :y "0%"
+                     :anchor "top center")
+  :stacking "fg"
+  :exclusive false
+  (calendar-widget))
+
+(defwidget calendar-widget []
+  (box :class "calendar-window"
+       :orientation "v"
+       :space-evenly false
+    (box :class "calendar-header"
+         :orientation "h"
+         :space-evenly false
+      (label :class "calendar-month" :text month)
+      (box :class "calendar-buttons"
+           :orientation "h"
+           :space-evenly false
+        (button :class "calendar-nav" :onclick "scripts/calendar prev" "󰅁")
+        (button :class "calendar-today" :onclick "scripts/calendar today" "Today")
+        (button :class "calendar-nav" :onclick "scripts/calendar next" "󰅂")))
+    (box :class "calendar-content"
+         :orientation "v"
+         :space-evenly false
+      (box :class "calendar-weekdays"
+           :orientation "h"
+           :space-evenly true
+        (label :class "calendar-weekday" :text "Su")
+        (label :class "calendar-weekday" :text "Mo")
+        (label :class "calendar-weekday" :text "Tu")
+        (label :class "calendar-weekday" :text "We")
+        (label :class "calendar-weekday" :text "Th")
+        (label :class "calendar-weekday" :text "Fr")
+        (label :class "calendar-weekday" :text "Sa"))
+      (calendar :class "calendar-days"
+                :day day
+                :month month_num
+                :year year
+                :show-details true
+                :show-heading false)
+      (box :class "calendar-footer"
+           :orientation "h"
+           :space-evenly false
+        (label :class "calendar-date" :text date)))))
+
+;;; eww/eww.scss - Calendar Widget Styling
+
+$rose-pine-base: #191724;
+$rose-pine-surface: #1f1d2e;
+$rose-pine-overlay: #26233a;
+$rose-pine-muted: #6e6a86;
+$rose-pine-subtle: #908caa;
+$rose-pine-text: #e0def4;
+$rose-pine-love: #eb6f92;
+$rose-pine-gold: #f6c177;
+$rose-pine-rose: #ebbcba;
+$rose-pine-pine: #31748f;
+$rose-pine-foam: #9ccfd8;
+$rose-pine-iris: #c4a7e7;
+
+.calendar-window {
+  background-color: $rose-pine-base;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid $rose-pine-overlay;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $rose-pine-overlay;
+}
+
+.calendar-month {
+  font-size: 18px;
+  font-weight: bold;
+  color: $rose-pine-text;
+  margin-right: auto;
+}
+
+.calendar-buttons {
+  gap: 8px;
+}
+
+.calendar-nav {
+  color: $rose-pine-subtle;
+  font-size: 16px;
+  background-color: $rose-pine-surface;
+  border-radius: 4px;
+  padding: 2px 6px;
+  min-width: 24px;
+  
+  &:hover {
+    background-color: $rose-pine-overlay;
+    color: $rose-pine-text;
+  }
+}
+
+.calendar-today {
+  color: $rose-pine-base;
+  background-color: $rose-pine-rose;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  
+  &:hover {
+    background-color: $rose-pine-gold;
+  }
+}
+
+.calendar-weekdays {
+  margin-bottom: 8px;
+}
+
+.calendar-weekday {
+  color: $rose-pine-muted;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+calendar {
+  background-color: transparent;
+  
+  /* Calendar header (should be hidden) */
+  & > header {
+    display: none;
+  }
+  
+  /* Calendar cells */
+  & > button {
+    border-radius: 4px;
+    color: $rose-pine-text;
+    margin: 2px;
+    padding: 2px;
+    background-color: $rose-pine-surface;
+    
+    &:hover {
+      background-color: $rose-pine-overlay;
+    }
+    
+    /* Today's date */
+    &.today {
+      background-color: $rose-pine-pine;
+      color: $rose-pine-text;
+      font-weight: bold;
+    }
+    
+    /* Selected date */
+    &:selected {
+      background-color: $rose-pine-iris;
+      color: $rose-pine-base;
+      font-weight: bold;
+    }
+    
+    /* Days from other months */
+    &.day-outside {
+      color: $rose-pine-muted;
+      background-color: transparent;
+    }
+  }
+}
+
+.calendar-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid $rose-pine-overlay;
+}
+
+.calendar-date {
+  color: $rose-pine-rose;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+;;; scripts/calendar - Calendar Control Script
+
+#!/bin/bash
+
+# Store the current date
+CURRENT_DATE=$(date +"%B %Y")
+CURRENT_DAY=$(date +"%d")
+CURRENT_MONTH_NUM=$(date +"%m")
+CURRENT_YEAR=$(date +"%Y")
+CURRENT_FULL_DATE=$(date +"%A, %B %d, %Y")
+
+# Initialize eww variables
+eww update month="$CURRENT_DATE"
+eww update day="$CURRENT_DAY"
+eww update month_num="$CURRENT_MONTH_NUM"
+eww update year="$CURRENT_YEAR"
+eww update date="$CURRENT_FULL_DATE"
+
+# Handle calendar navigation
+case "$1" in
+  "prev")
+    # Go to previous month
+    NEW_DATE=$(date -d "$CURRENT_DATE -1 month" +"%B %Y")
+    NEW_MONTH_NUM=$(date -d "$CURRENT_DATE -1 month" +"%m")
+    NEW_YEAR=$(date -d "$CURRENT_DATE -1 month" +"%Y")
+    eww update month="$NEW_DATE"
+    eww update month_num="$NEW_MONTH_NUM"
+    eww update year="$NEW_YEAR"
+    ;;
+  "next")
+    # Go to next month
+    NEW_DATE=$(date -d "$CURRENT_DATE +1 month" +"%B %Y")
+    NEW_MONTH_NUM=$(date -d "$CURRENT_DATE +1 month" +"%m")
+    NEW_YEAR=$(date -d "$CURRENT_DATE +1 month" +"%Y")
+    eww update month="$NEW_DATE"
+    eww update month_num="$NEW_MONTH_NUM"
+    eww update year="$NEW_YEAR"
+    ;;
+  "today")
+    # Reset to today
+    eww update month="$CURRENT_DATE"
+    eww update day="$CURRENT_DAY"
+    eww update month_num="$CURRENT_MONTH_NUM"
+    eww update year="$CURRENT_YEAR"
+    ;;
+esac

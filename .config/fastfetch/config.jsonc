@@ -4,8 +4,10 @@
     	"source": "~/.config/fastfetch/images/arch.png",
     	"type": "kitty-direct",
     	"padding": {
-    		"top": 4,
-                "left": 4
+    		"top": 5,
+                "left": 20,
+                "bottom": 5,
+                "right": 8
     	}
     },
     "display": {

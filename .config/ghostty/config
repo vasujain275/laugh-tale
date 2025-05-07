@@ -2,7 +2,7 @@ font-family = JetBrainsMono Nerd Font
 font-size = 18
 
 theme = rose-pine
-background-opacity = 0.70
+background-opacity = 0.75
 
 window-decoration = false
 window-vsync = true
