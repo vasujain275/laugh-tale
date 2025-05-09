@@ -91,6 +91,29 @@ window#waybar.hidden {
   font-weight: bold;
 }
 
+#tray {
+  background: rgba(31, 29, 46, 0.7);
+  border-radius: 10px;
+  margin: 4px 3px;
+  padding: 0 10px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: rgba(235, 111, 146, 0.5);
+  border-radius: 6px;
+}
+
+#tray menu {
+  background: rgba(25, 23, 36, 0.95);
+  border: 1px solid @overlay;
+  border-radius: 8px;
+}
+
 #clock {
   color: @gold;
   font-weight: bold;

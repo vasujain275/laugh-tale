@@ -1,0 +1,55 @@
+(defwindow network_menu
+  :monitor 0
+  :geometry (geometry :x "0px" 
+                      :y "0px" 
+                      :width "300px"
+                      :height "400px"
+                      :anchor "top right")
+  :stacking "overlay"
+  :windowtype "dock"
+  :wm-ignore true
+  (network_box))
+
+(defvar wifi_list "")
+(defvar wifi_status "")
+(defvar current_network "")
+(defvar show_password_entry false)
+(defvar connect_to_network "")
+(defvar password_value "")
+
+(defwidget network_box []
+  (box :class "network-box" 
+       :orientation "vertical" 
+       :space-evenly false
+    (box :class "header"
+         :orientation "horizontal"
+      (label :text "Network" :class "title")
+      (button :class "close-button" :onclick "eww close network_menu" "×"))
+    
+    (box :class "status-section" :orientation "vertical" :space-evenly false
+      (label :class "section-title" :text "Connection Status")
+      (label :class "status-text" :text "${current_network == "" ? "Not Connected" : "Connected to: ${current_network}"}")
+      (box :class "wifi-control" :orientation "horizontal"
+        (label :text "WiFi")
+        (button :class "toggle-btn ${wifi_status == "enabled" ? "on" : "off"}" 
+                :onclick "scripts/network-toggle.sh && scripts/update-network-status.sh" 
+                "${wifi_status == "enabled" ? "" : ""}")))
+    
+    (box :class "divider")
+    
+    (box :class "networks-section" :orientation "vertical" :space-evenly false :visible "${wifi_status == "enabled"}"
+      (label :class "section-title" :text "Available Networks")
+      (scroll :height 200 :vscroll true
+        (box :orientation "vertical" :space-evenly false :class "network-list"
+          (literal :content wifi_list))))
+    
+    (box :class "password-section" :orientation "vertical" :space-evenly false :visible show_password_entry
+      (label :class "section-title" :text "Connect to ${connect_to_network}")
+      (input :class "password-input" 
+             :password true 
+             :value password_value 
+             :onchange "eww update password_value=\"{}\"")
+      (box :orientation "horizontal" :class "button-row"
+        (button :class "cancel-button" :onclick "eww update show_password_entry=false" "Cancel")
+        (button :class "connect-button" :onclick "scripts/connect-network.sh \"${connect_to_network}\" \"${password_value}\" && scripts/update-network-status.sh && eww update show_password_entry=false password_value=''" "Connect")))
+)

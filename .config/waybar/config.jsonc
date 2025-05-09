@@ -9,7 +9,7 @@
     
     "modules-left": ["custom/arch", "hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "network", "bluetooth", "battery", "custom/power"],
+    "modules-right": ["tray", "pulseaudio", "network", "bluetooth", "battery", "custom/power"],
     
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -32,6 +32,14 @@
         "format": "󰣇",
         "tooltip": false,
         "on-click": "rofi -show drun"
+    },
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8,
+        "show-passive-items": true,
+        "reverse-direction": false,
+        "smooth-scrolling-threshold": 5
     },
     
     "clock": {
@@ -58,10 +66,11 @@
         "format-wifi": "󰤨 {essid}",
         "format-ethernet": "󰈀 {ipaddr}/{cidr}",
         "format-linked": "󰈀 {ifname} (No IP)",
-        "format-disconnected": "󰤮 Disconnected",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "format-disconnected": "󰤮 ",
+        // "format-alt": "{ifname}: {ipaddr}/{cidr}",
         "tooltip-format": "{ifname} via {gwaddr}",
-        "on-click": "nm-connection-editor"
+        "on-click": "~/.config/eww/scripts/launch-network-menu.sh",
+        "on-right-click": "~/.config/eww/scripts/launch-network-menu.sh"
     },
     
     "bluetooth": {
