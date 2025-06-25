@@ -1,9 +1,8 @@
 return {
   {
     'saghen/blink.cmp',
-    version = '*', -- Use a release tag (or build from source if needed)
+    version = '*',
     dependencies = {
-      -- Optional: Provides snippet support (uses premade snippets)
       'rafamadriz/friendly-snippets',
       {
         'L3MON4D3/LuaSnip',
@@ -17,38 +16,87 @@ return {
       },
     },
     opts = {
-      -- Configure keymaps using Blink's special schema.
       keymap = {
-        preset = 'default', -- Base mapping preset; your custom keys will merge with it.
+        preset = 'default',
+        ['<C-n>'] = { 'select_next', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+        ['<C-y>'] = { 'select_and_accept', 'fallback' },
+        ['<C-Space>'] = { 'show', 'fallback' },
+        ['<C-l>'] = { 'snippet_forward', 'fallback' },
+        ['<C-h>'] = { 'snippet_backward', 'fallback' },
+        ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback' },
+        ['<C-e>'] = { 'hide', 'fallback' },
+      },
 
-        ['<C-n>'] = { 'select_next', 'fallback' }, -- Next completion item
-        ['<C-p>'] = { 'select_prev', 'fallback' }, -- Previous completion item
-        ['<C-b>'] = {
-          function(cmp)
-            cmp.scroll_documentation_up(4)
-          end,
-          'fallback',
-        }, -- Scroll docs up
-        ['<C-f>'] = {
-          function(cmp)
-            cmp.scroll_documentation_down(4)
-          end,
-          'fallback',
-        }, -- Scroll docs down
-        ['<C-y>'] = { 'select_and_accept', 'fallback' }, -- Accept selected (or first) item
-        ['<C-Space>'] = { 'show', 'fallback' }, -- Manually trigger the completion menu
-        ['<C-l>'] = { 'snippet_forward', 'fallback' }, -- Expand snippet or jump to next placeholder
-        ['<C-h>'] = { 'snippet_backward', 'fallback' }, -- Jump backwards in snippet placeholders
-        ['<C-e>'] = {}, -- Disable <C-e> if you don't need it
-      },
       appearance = {
-        nerd_font_variant = 'mono', -- Adjust icon spacing for Nerd Font Mono
+        nerd_font_variant = 'mono',
+        use_nvim_cmp_as_default = true,
       },
+
+      completion = {
+        accept = {
+          auto_brackets = {
+            enabled = true,
+          },
+        },
+        menu = {
+          draw = {
+            treesitter = { 'lsp' },
+          },
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+        },
+        ghost_text = {
+          enabled = true,
+        },
+      },
+
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
+        providers = {
+          lsp = {
+            name = 'LSP',
+            module = 'blink.cmp.sources.lsp',
+            score_offset = 90,
+          },
+          path = {
+            name = 'Path',
+            module = 'blink.cmp.sources.path',
+            score_offset = 3,
+            opts = {
+              trailing_slash = false,
+              label_trailing_slash = true,
+              get_cwd = function(context)
+                return vim.fn.getcwd()
+              end,
+            },
+          },
+          snippets = {
+            name = 'Snippets',
+            module = 'blink.cmp.sources.snippets',
+            score_offset = 85,
+          },
+          buffer = {
+            name = 'Buffer',
+            module = 'blink.cmp.sources.buffer',
+            score_offset = 5,
+          },
+        },
+      },
+
+      signature = {
+        enabled = true,
+        window = {
+          border = 'rounded',
+        },
       },
     },
-    -- Ensures that if you extend the default sources elsewhere they are merged.
     opts_extend = { 'sources.default' },
   },
 }
