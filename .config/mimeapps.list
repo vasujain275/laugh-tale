@@ -25,6 +25,7 @@ image/gif=swappy.desktop;
 image/tiff=swappy.desktop;
 image/webp=swappy.desktop;
 image/bmp=swappy.desktop;
+image/svg+xml=swappy.desktop;
 
 [Default Applications]
 application/pdf=brave-browser.desktop
@@ -56,3 +57,5 @@ image/webp=swappy.desktop
 image/bmp=swappy.desktop
 x-scheme-handler/about=brave-browser.desktop
 x-scheme-handler/unknown=brave-browser.desktop
+image/svg+xml=swappy.desktop
+x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
