@@ -193,10 +193,6 @@ export PATH="$PATH:/home/vasu/.turso"
 
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# pyenv configuration
 export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
-
-# Optional: If you want pyenv-virtualenv functionality
-eval "$(pyenv virtualenv-init - zsh)"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init zsh -)"
