@@ -124,19 +124,50 @@ alias pbcopy='wl-copy'
 alias pbpaste='wl-paste'
 alias hashtag='echo "#" | wl-copy'
 
-# Update and Ugrade Arch
+
+# Function to mount rd
+rd() {
+  case "$1" in
+    start) sudo systemctl start rclone-debrid-mount.service ;;
+    stop)  sudo systemctl stop rclone-debrid-mount.service ;;
+    restart) sudo systemctl restart rclone-debrid-mount.service ;;
+    status) sudo systemctl status rclone-debrid-mount.service ;;
+    *) echo "Usage: rd {start|stop|restart|status}" ;;
+  esac
+}
+
+# Update and Upgrade Arch
 function up() {
   echo ":: Checking Arch Linux PGP Keyring..."
-  local installedver="$(LANG= sudo pacman -Qi archlinux-keyring | grep -Po '(?<=Version         : ).*')"
-  local currentver="$(LANG= sudo pacman -Si archlinux-keyring | grep -Po '(?<=Version         : ).*')"
-  if [ $installedver != $currentver ]; then
+  local installedver="$(LANG= sudo pacman -Qi archlinux-keyring 2>/dev/null | grep -Po '(?<=Version         : ).*')"
+  local currentver="$(LANG= sudo pacman -Si archlinux-keyring 2>/dev/null | grep -Po '(?<=Version         : ).*')"
+  if [[ "$installedver" != "$currentver" ]]; then
     echo " Arch Linux PGP Keyring is out of date."
     echo " Updating before full system upgrade."
     sudo pacman -Sy --needed --noconfirm archlinux-keyring
   else
     echo " Arch Linux PGP Keyring is up to date."
-    echo " Proceeding with full system upgrade."
   fi
+
+  echo ":: Checking Chaotic AUR Keyring..."
+  local chaotic_installedver="$(LANG= sudo pacman -Qi chaotic-keyring 2>/dev/null | grep -Po '(?<=Version         : ).*')"
+  local chaotic_currentver="$(LANG= sudo pacman -Si chaotic-keyring 2>/dev/null | grep -Po '(?<=Version         : ).*')"
+  if [[ "$chaotic_installedver" != "$chaotic_currentver" ]]; then
+    echo " Chaotic AUR Keyring is out of date."
+    echo " Updating before full system upgrade."
+    sudo pacman -Sy --needed --noconfirm chaotic-keyring
+  else
+    echo " Chaotic AUR Keyring is up to date."
+  fi
+
+  echo ":: Checking Arch News for manual interventions..."
+  if command -v checkupdates-archnews &>/dev/null; then
+    checkupdates-archnews
+  else
+    echo " (Install 'pacman-contrib' to automatically check Arch News)"
+  fi
+
+  echo ":: Proceeding with full system upgrade..."
   if (( $+commands[yay] )); then
     yay -Syu
   elif (( $+commands[trizen] )); then
@@ -148,9 +179,9 @@ function up() {
   else
     sudo pacman -Syu
   fi
+
   flatpak update
 }
-
 
 
 # Shell Intergrations
