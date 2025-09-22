@@ -4,7 +4,8 @@ local wezterm = require("wezterm")
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
-config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = 'Rosé Pine (base16)'
+-- config.color_scheme = 'Rosé Pine (Gogh)'
 config.term = "xterm-256color"
 
 config.font = wezterm.font("JetBrainsMono Nerd Font")
@@ -12,8 +13,8 @@ config.font_size = 16
 
 config.enable_tab_bar = false
 
-config.window_decorations = "NONE"
-config.window_background_opacity = 0.75
+-- config.window_decorations = "NONE"
+-- config.window_background_opacity = 0.75
 config.macos_window_background_blur = 8
 
 config.window_padding = {
