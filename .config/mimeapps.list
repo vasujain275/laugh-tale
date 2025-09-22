@@ -26,6 +26,9 @@ image/tiff=swappy.desktop;
 image/webp=swappy.desktop;
 image/bmp=swappy.desktop;
 image/svg+xml=swappy.desktop;
+x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
+x-scheme-handler/mongodb=MongoDB Compass.desktop
+x-scheme-handler/mongodb+srv=MongoDB Compass.desktop
 
 [Default Applications]
 application/pdf=brave-browser.desktop
@@ -60,3 +63,5 @@ x-scheme-handler/unknown=brave-browser.desktop
 image/svg+xml=swappy.desktop
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
 x-scheme-handler/mailto=brave-browser.desktop
+x-scheme-handler/mongodb=MongoDB Compass.desktop
+x-scheme-handler/mongodb+srv=MongoDB Compass.desktop

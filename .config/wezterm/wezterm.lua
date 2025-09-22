@@ -24,5 +24,11 @@ config.window_padding = {
 	bottom = 0,
 }
 
+-- Always maximized (windowed fullscreen with titlebar)
+wezterm.on("gui-startup", function(cmd)
+  local _, _, window = wezterm.mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
+
 -- and finally, return the configuration to wezterm
 return config
